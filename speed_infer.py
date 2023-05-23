@@ -2,8 +2,8 @@ import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt
 
-fy = 5.5e-4 # focal length
-D = 0.3 # distance from camera to legos
+fy = 5.0e-4 # focal length
+D = 0.22 # distance from camera to legos
 magic_number = fy/D # magic number to convert pixel to meter
 
 #not robust to noise

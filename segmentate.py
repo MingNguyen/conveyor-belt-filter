@@ -3,6 +3,8 @@ import cv2
 import matplotlib.pyplot as plt
 
 
+threshold = 170
+
 """Segmentate image to get rid of background noise
 Read this to improve: https://docs.opencv.org/4.x/d3/db4/tutorial_py_watershed.html
 """
@@ -12,9 +14,11 @@ def segmentate(img, num_objects=2):
     img_gray= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img_gray = cv2.GaussianBlur(img_gray, (7, 7), 5)
     # What is the better threshold value?
-    ret, thresh = cv2.threshold(img_gray, 200, 255, 0)
+    ret, thresh = cv2.threshold(img_gray, threshold, 255, 0)
 
     contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    thresh = cv2.drawContours(thresh,contours,-1,(0,255, 0))
+    cv2.imshow('wtf', thresh)
     contours = sorted(contours, key=lambda x: cv2.contourArea(x), reverse=True)
     bounding_boxes = []
     

@@ -7,8 +7,8 @@ import isolate
 import speed_infer
 import time
 
-# cap = cv.VideoCapture(0, cv.CAP_DSHOW)
-cap = cv.VideoCapture('data/lego_on_belt_2.mp4')
+cap = cv.VideoCapture(0, cv.CAP_DSHOW)
+# cap = cv.VideoCapture('data/lego_on_belt_2.mp4')
 # cap.set(cv.CAP_PROP_POS_MSEC, 21000)
 
 prev_frame_roi = None
@@ -27,16 +27,18 @@ while (True):
         
         cur_time = time.time()
         time_elapsed = cur_time - prev_time
-        time_elapsed = 1.0/32.0
+        # time_elapsed = 1.0/32.0
         # speed = speed_infer.get_speed(bounding_boxes, previous_bounding_boxes, cur_time - prev_time)
         # speed = speed_infer.get_speed_isolated(isolated, previous_isolated, time_elapsed, debug=debug)
         speed = speed_infer.optical_flow(frame_roi, prev_frame_roi, \
                 previous_bounding_boxes, time_elapsed)
-        if (speed == -1):
+        if (speed == -1 or speed == 0.0):
             speed = prev_speed
         
         if (speed != -1):
             prev_speed = speed
+        if (speed < 0.1):
+            print(speed)
         prev_time = cur_time
         previous_isolated = isolated
         prev_frame_roi = frame_roi
